@@ -5,7 +5,7 @@ async function getBackendMessage(): Promise<void> {
         const response = await fetch("/api");
 
         if (!response.ok) {
-            throw new Error(`HTTP-Fehler: ${response.status}`);
+            console.log("Error: HTTP Response error");
         }
 
         const data: { success: boolean; message: string } =
