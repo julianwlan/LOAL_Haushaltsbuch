@@ -1,0 +1,42 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+body {
+    font-family: "JetBrains Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: 100;
+    font-style: normal;
+}
+
+.logo {
+    width: 4%;
+    border-radius: 50%;
+}
+
+#nav-bar {
+    grid-column: span 7;
+    background-color: burlywood;
+    height: 8vh;
+    font-size: 2vh;
+    margin: 3vw;
+    padding: 1vh 10vw;
+    position: relative;
+    z-index: 20;
+    border-radius: 20px;
+
+    display: flex;
+
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#nav-bar div {
+    font-weight: 400;
+    font-size: 2vh;
+}
+
