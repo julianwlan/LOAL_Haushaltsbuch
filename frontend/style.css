@@ -20,17 +20,19 @@ body {
 #nav-bar {
     grid-column: span 7;
     background-color: burlywood;
-    height: 6vh;
+    height: 8vh;
     font-size: 2vh;
-    margin: 2vw;
+    margin: 3vw;
     padding: 1vh 10vw;
     position: relative;
     z-index: 20;
+    border-radius: 20px;
 
     display: flex;
 
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
 }
 
 #nav-bar div {
