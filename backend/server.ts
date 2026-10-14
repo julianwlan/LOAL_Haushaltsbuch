@@ -14,6 +14,18 @@ app.get("/api", (req, res) => {
     });
 });
 
+app.get("/income", (req, res) => {
+
+});
+
+app.get("/expenditure", (req, res) => {
+
+});
+
+app.get("/categories", (req, res) => {
+
+});
+
 app.use((req, res) => {
     res.status(404).json({
         success: false,
