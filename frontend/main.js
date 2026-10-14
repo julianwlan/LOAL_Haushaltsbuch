@@ -2,9 +2,13 @@
 console.log("Hello from backend");
 const incomeCategories = ["Job", "Gift", "Investment", "Other"];
 const expenditureCategories = ["Rent", "Food", "Transport", "Hobby", "Abonnement", "Health", "Other"];
-console.log(incomeCategories + " " + expenditureCategories);
 const api = "http://localhost:3000";
-let path = "/income";
+let path = "/api/data";
+var type;
+(function (type) {
+    type[type["INCOME"] = 0] = "INCOME";
+    type[type["EXPENDITURE"] = 1] = "EXPENDITURE";
+})(type || (type = {}));
 async function getBackendMessage() {
     try {
         const response = await fetch("/api");
@@ -18,12 +22,43 @@ async function getBackendMessage() {
         console.error("Fehler beim Abrufen des Backends:", error);
     }
 }
-async function getIncome() {
-    try {
-        const response = await fetch("/income");
-    }
-    catch (error) {
-        console.error("Error when calling backend: ", error);
-    }
+const saveDataBtn = document.querySelector("#saveDataBtn");
+/*saveDataBtn.addEventListener("click", e => {
+    addBookingToJson();
+});*/
+async function addBookingToJson() {
+    const id = await getIdFromServer();
+    const info = {
+        [`bk${id}`]: {
+            id: id,
+            date: "01.01.2001",
+            description: "billa",
+            amount: 50,
+            type: "EXPENDITURE",
+            category: {
+                id: 2,
+                name: "drinks"
+            }
+        }
+    };
+    fetch(api + "/api/data", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(info)
+    });
 }
+async function getIdFromServer() {
+    const response = await fetch(api + "/api/id");
+    const id = await response.json();
+    return id;
+}
+async function getJsonFile() {
+    const data = await fetch(api + path);
+    const response = await data.json();
+    console.log(response);
+}
+getJsonFile();
+addBookingToJson();
 getBackendMessage();
