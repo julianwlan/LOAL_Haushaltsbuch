@@ -1,12 +1,13 @@
 import express = require("express");
+import path = require("path");
 import {Express} from "express";
 
 const app: Express = express();
 app.use(express.json());
 
-app.use(express.static("../frontend"));
+app.use(express.static(path.resolve(__dirname, "../frontend")));
 
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
     res.json({
         success: true,
         message: "Backend is running!"
