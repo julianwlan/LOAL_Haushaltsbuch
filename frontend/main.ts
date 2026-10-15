@@ -52,32 +52,6 @@ async function getBackendMessage(): Promise<void> {
     }
 }
 
-/* const saveDataBtn: HTMLButtonElement = document.querySelector("#saveDataBtn") as HTMLButtonElement;
-saveDataBtn.addEventListener("click", async e => {
-    const bookingId = id++;
-    const date: Date = new Date();
-    const description: string = "billa";
-    const amount: number = 50;
-    const type: Type = Type.EXPENDITURE;
-    const categoryId: number = 5;
-    const categoryName: string = "Food";
-
-    const info: Info = {
-        [`bk${bookingId}`]: {
-            id: bookingId,
-            date: date,
-            description: description,
-            amount: amount,
-            type: type,
-            category: {
-                id: categoryId,
-                name: categoryName
-            }
-        }
-    }
-    addBookingToJson(info);
-});*/
-
 async function addBookingToJson(info: Info) {
     fetch(api + "/api/data", {
         method: "POST",
@@ -160,5 +134,75 @@ async function init() {
     await getJsonFile();
     await getBackendMessage();
 }
+
+const showCategoryInput = document.querySelector<HTMLButtonElement>("#showCategoryInput");
+
+const categoryInputContainer = document.querySelector<HTMLDivElement>("#categoryInputContainer");
+
+const categoryNameInput = document.querySelector<HTMLInputElement>("#categoryName");
+
+const addCategoryBtn = document.querySelector<HTMLButtonElement>("#addCategoryBtn");
+
+const cancelCategoryBtn = document.querySelector<HTMLButtonElement>("#cancelAddCategoryBtn");
+
+const saveDataBtn: HTMLButtonElement = document.querySelector("#saveDataBtn") as HTMLButtonElement;
+
+showCategoryInput?.addEventListener("click", () => {
+    categoryInputContainer!.hidden = false;
+    categoryNameInput?.focus();
+});
+
+cancelCategoryBtn?.addEventListener("click", () => {
+    categoryInputContainer!.hidden = true;
+
+    if (categoryNameInput) {
+        categoryNameInput.value = "";
+    }
+});
+
+addCategoryBtn?.addEventListener("click", async () => {
+    const name = categoryNameInput?.value.trim();
+
+    if (!name) {
+        alert("Please enter a category name!");
+        return;
+    }
+
+    const selectedType: HTMLInputElement = document.querySelector<HTMLInputElement>('input[name="categoryType"]:checked') as HTMLInputElement;
+
+    if (!selectedType) {
+        alert("Please select Income or Expenditure!");
+        return;
+    }
+
+    await addCategory(selectedType.value);
+
+    categoryInputContainer!.hidden = true;
+});
+
+saveDataBtn?.addEventListener("click", async e => {
+    const bookingId = id++;
+    const date: Date = new Date(document.querySelector<HTMLInputElement>("#date-input")!.value);
+    const description: string = document.querySelector<HTMLInputElement>("#descr-input")!.value.trim();
+    const amount: number = Number (document.querySelector<HTMLInputElement>("#amnt-input")!.value);
+    const type: Type = Type.EXPENDITURE;
+    const categoryId: number = Number (document.querySelector<HTMLInputElement>('input[name="expenditureCategory"]:checked')!.value);
+    const categoryName: string = document.querySelector<HTMLInputElement>('input[name="expenditureCategory"]:checked')!.parentElement!.textContent!.trim();
+
+    const info: Info = {
+        [`bk${bookingId}`]: {
+            id: bookingId,
+            date: date,
+            description: description,
+            amount: amount,
+            type: type,
+            category: {
+                id: categoryId,
+                name: categoryName
+            }
+        }
+    }
+    addBookingToJson(info);
+});
 
 init();
