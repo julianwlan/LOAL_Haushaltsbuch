@@ -41,8 +41,21 @@ app.get("/api/data", (req, res) => {
     res.sendFile(path.resolve(__dirname, "data/balance.json"));
 });
 
-app.get("/categories", (req, res) => {
+app.post("/api/categories", (req, res) => {
+    const  data = req.body;
 
+    const filePath = path.resolve(__dirname, "data/categories.json");
+    const file = fs.readFileSync(filePath, "utf-8");
+    const dataFile = JSON.parse(file);
+
+    dataFile.categories.incomeCategories = data.income;
+    dataFile.categories.expenditureCategories = data.expenditure;
+
+    fs.writeFileSync(filePath, JSON.stringify(dataFile, null, 2));
+});
+
+app.get("/api/categories", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "data/categories.json"));
 });
 
 app.use((req, res) => {

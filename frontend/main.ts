@@ -1,7 +1,33 @@
 console.log("Hello from backend");
 
-const incomeCategories: string[] = ["Job", "Gift", "Investment", "Other"];
-const expenditureCategories: string[] = ["Rent", "Food", "Transport", "Hobby", "Abonnement", "Health", "Other"];
+interface Category {
+    id: number;
+    name: string;
+}
+
+interface Categories {
+    income: Category[];
+    expenditure: Category[];
+}
+
+const categories: Categories = {
+    income: [
+        { id: 1, name: "Job" },
+        { id: 2, name: "Gift" },
+        { id: 3, name: "Investment" },
+        { id: 4, name: "Other" }
+    ],
+    expenditure: [
+        { id: 1, name: "Rent" },
+        { id: 2, name: "Food" },
+        { id: 3, name: "Drink"},
+        { id: 4, name: "Transport" },
+        { id: 5, name: "Hobby" },
+        { id: 6, name: "Abonnement" },
+        { id: 7, name: "Health" },
+        { id: 8, name: "Other" }
+    ]
+};
 
 const api: string = "http://localhost:3000";
 let path: string = "/api/data";
@@ -69,7 +95,6 @@ saveDataBtn.addEventListener("click", async e => {
 });
 
 async function addBookingToJson(info: Info) {
-
     fetch(api + "/api/data", {
         method: "POST",
         headers: {
@@ -87,6 +112,16 @@ async function getIdFromServer() {
     return id;
 }
 
+async function addCategoriesToJson(){
+    fetch(api + "/api/categories", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(categories)
+    });
+}
+
 async function getJsonFile() {
     const data = await fetch(api + path);
 
@@ -94,5 +129,6 @@ async function getJsonFile() {
     console.log(response);
 }
 
+addCategoriesToJson();
 getJsonFile();
 getBackendMessage();
