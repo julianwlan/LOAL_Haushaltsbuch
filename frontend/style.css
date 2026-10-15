@@ -35,7 +35,7 @@ body {
     align-items: center;
 }
 
-#nav-bar div {
+#nav-bar a {
     font-weight: 400;
     font-size: 2vh;
 }
@@ -45,6 +45,8 @@ body {
     background-color: #d39046;
     border-radius: 20px;
     padding: 1vh 2vh;
+    text-decoration: none;
+    color: black;
 }
 
 .nav-btn:hover {

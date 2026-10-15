@@ -58,6 +58,14 @@ app.get("/api/categories", (req, res) => {
     res.sendFile(path.resolve(__dirname, "data/categories.json"));
 });
 
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "frontend", "index.html"));
+});
+
+app.get("/analysis", (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "frontend", "analysis.html"));
+});
+
 app.use((req, res) => {
     res.status(404).json({
         success: false,
