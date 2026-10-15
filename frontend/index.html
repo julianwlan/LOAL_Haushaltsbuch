@@ -7,19 +7,31 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="img/faviconAndLogo.jpg" type="image/x-icon">
+    <link rel="icon" type="image/png" href="img/faviconAndLogo.png">
+    <meta http-equiv="refresh" content="0">
 </head>
 <body>
     <nav id="nav-bar">
         <div>
-            <img src="img/faviconAndLogo.jpg" alt="Hand with coin" class="logo">
+            <img src="img/faviconAndLogo.png" alt="Hand with coin" class="logo">
         </div>
-        <a href="/"  id="home-btn" class="nav-btn">Home</a>
-        <a href="/analysis"  id="analysis-btn" class="nav-btn">Analysis</a>
+        <a href="/" id="home-btn" class="nav-btn">Home</a>
+        <a href="/analysis" id="analysis-btn" class="nav-btn">Analysis</a>
     </nav>
 
     <form id="booking-form">
-        input:
+        <div class="toggled">
+            <button id="income-toggle" class="toggle-element">Income</button>
+            <button id="expense-toggle" class="toggle-element">Expenses</button>
+        </div>
+
+        <input type="text" name="description" id="descr-input" placeholder="Brief Description">
+        <div>
+            <input type="number" name="amount" id="amnt-input" placeholder="1000">
+            <span>€</span>
+        </div>
+
+        <div id="radio-div"></div>
     </form>
 
     <script src="main.js"></script>

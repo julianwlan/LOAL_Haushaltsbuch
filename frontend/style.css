@@ -53,3 +53,22 @@ body {
     color: white;
 }
 
+#booking-form {
+    margin: 1vh auto;
+    border: 1px solid red;
+    width: 60%
+}
+
+.toggled {
+    display: flex;
+    justify-content: space-evenly;
+
+}
+
+.toggle-element {
+    background-color: gray;
+}
+
+.clicked {
+    background-color: dimgray;
+}
