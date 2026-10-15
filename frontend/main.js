@@ -1,23 +1,6 @@
 "use strict";
 console.log("Hello from backend");
-const categories = {
-    income: [
-        { id: 1, name: "Job" },
-        { id: 2, name: "Gift" },
-        { id: 3, name: "Investment" },
-        { id: 4, name: "Other" }
-    ],
-    expenditure: [
-        { id: 1, name: "Rent" },
-        { id: 2, name: "Food" },
-        { id: 3, name: "Drink" },
-        { id: 4, name: "Transport" },
-        { id: 5, name: "Hobby" },
-        { id: 6, name: "Abonnement" },
-        { id: 7, name: "Health" },
-        { id: 8, name: "Other" }
-    ]
-};
+let categories;
 const api = "http://localhost:3000";
 let path = "/api/data";
 var Type;
@@ -85,11 +68,18 @@ async function addCategoriesToJson() {
         body: JSON.stringify(categories)
     });
 }
+async function getCategoriesFromServer() {
+    const response = await fetch(api + "/api/categories");
+    const data = await response.json();
+    categories = data.categories;
+}
+// function getCategoriesFromUser()
 async function getJsonFile() {
     const data = await fetch(api + path);
     const response = await data.json();
     console.log(response);
 }
-addCategoriesToJson();
+getCategoriesFromServer();
+//addCategoriesToJson();
 getJsonFile();
 getBackendMessage();
