@@ -13,7 +13,7 @@ body {
 }
 
 .logo {
-    width: 4%;
+    width: 60px;
     border-radius: 50%;
 }
 
@@ -22,7 +22,7 @@ body {
     background-color: burlywood;
     height: 8vh;
     font-size: 2vh;
-    margin: 3vw;
+    margin: 2vw;
     padding: 1vh 10vw;
     position: relative;
     z-index: 20;
@@ -38,5 +38,9 @@ body {
 #nav-bar div {
     font-weight: 400;
     font-size: 2vh;
+}
+
+.nav-btn {
+
 }
 
