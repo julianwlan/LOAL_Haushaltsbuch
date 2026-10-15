@@ -88,28 +88,43 @@ async function addBookingToJson(info: Info) {
     });
 }
 
-function addCategoriesFromUser(){
+function convertCategoriesToRadios(selector: string){
     const radio = document.querySelectorAll<HTMLInputElement>('input[name="category"]');
 
     const container: Element = document.querySelector("#incomeCategories") as Element;
 
     container.innerHTML = "";
 
-    categories.incomeCategories.forEach(category => {
-        const radio = document.createElement("input");
-        radio.type = "radio";
-        radio.name = "category";
-        radio.value = String(category.id);
+    if(selector == "Income") {
+        categories.incomeCategories.forEach(category => {
+            const radio = document.createElement("input");
+            radio.type = "radio";
+            radio.name = "incomeCategory";
+            radio.value = String(category.id);
 
-        const label : HTMLLabelElement = document.createElement("label");
-        label.append(radio, category.name);
+            const label: HTMLLabelElement = document.createElement("label");
+            label.append(radio, category.name);
 
-        container.appendChild(label);
+            container.appendChild(label);
+        });
+    } else if(selector == "Expenditure"){
+
+        categories.expenditureCategories.forEach(category => {
+            const radio = document.createElement("input");
+            radio.type = "radio";
+            radio.name = "expenditureCategory";
+            radio.value = String(category.id);
+
+            const label: HTMLLabelElement = document.createElement("label");
+            label.append(radio, category.name);
+
+            container.appendChild(label);
     });
+    }
 }
 
 async function addCategoriesToJson(){
-    addCategoriesFromUser();
+    convertCategoriesToRadios("Income");
     fetch(api + "/api/categories", {
         method: "POST",
         headers: {
@@ -124,10 +139,16 @@ async function getCategoriesFromServer(){
 
     const data = await response.json();
     categories = data.categories;
-    addCategoriesFromUser();
 }
 
-// function getCategoriesFromUser()
+function addCategory(type: string) {
+    //const categorys: HTML
+    if (type === "Income") {
+        //categories = categorys.categories.incomeCategories;
+    } else if (type === "Expenditure") {
+        //categories = categorys.categories.expenditureCategories;
+    }
+}
 
 async function getJsonFile() {
     const data = await fetch(api + path);
@@ -137,6 +158,7 @@ async function getJsonFile() {
 
 async function init() {
     await getCategoriesFromServer();
+    convertCategoriesToRadios("Expenditure");
     //await addCategoriesToJson();
     await getJsonFile();
     await getBackendMessage();

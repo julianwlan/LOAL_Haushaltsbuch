@@ -55,29 +55,35 @@ async function addBookingToJson(info) {
         body: JSON.stringify(info)
     });
 }
-/*async function getIdFromServer() {
-    const response = await fetch(api + "/api/id");
-
-    const id: number = await response.json();
-
-    return id;
-}*/
-function addCategoriesFromUser() {
+function convertCategoriesToRadios(selector) {
     const radio = document.querySelectorAll('input[name="category"]');
     const container = document.querySelector("#incomeCategories");
     container.innerHTML = "";
-    categories.incomeCategories.forEach(category => {
-        const radio = document.createElement("input");
-        radio.type = "radio";
-        radio.name = "category";
-        radio.value = String(category.id);
-        const label = document.createElement("label");
-        label.append(radio, category.name);
-        container.appendChild(label);
-    });
+    if (selector == "Income") {
+        categories.incomeCategories.forEach(category => {
+            const radio = document.createElement("input");
+            radio.type = "radio";
+            radio.name = "incomeCategory";
+            radio.value = String(category.id);
+            const label = document.createElement("label");
+            label.append(radio, category.name);
+            container.appendChild(label);
+        });
+    }
+    else if (selector == "Expenditure") {
+        categories.expenditureCategories.forEach(category => {
+            const radio = document.createElement("input");
+            radio.type = "radio";
+            radio.name = "expenditureCategory";
+            radio.value = String(category.id);
+            const label = document.createElement("label");
+            label.append(radio, category.name);
+            container.appendChild(label);
+        });
+    }
 }
 async function addCategoriesToJson() {
-    addCategoriesFromUser();
+    convertCategoriesToRadios("Income");
     fetch(api + "/api/categories", {
         method: "POST",
         headers: {
@@ -90,17 +96,55 @@ async function getCategoriesFromServer() {
     const response = await fetch(api + "/api/categories");
     const data = await response.json();
     categories = data.categories;
-    addCategoriesFromUser();
 }
-// function getCategoriesFromUser()
+function addCategory(type) {
+    //const categorys: HTML
+    if (type === "Income") {
+        //categories = categorys.categories.incomeCategories;
+    }
+    else if (type === "Expenditure") {
+        //categories = categorys.categories.expenditureCategories;
+    }
+}
 async function getJsonFile() {
     const data = await fetch(api + path);
     const response = await data.json();
 }
 async function init() {
     await getCategoriesFromServer();
+    convertCategoriesToRadios("Expenditure");
     //await addCategoriesToJson();
     await getJsonFile();
     await getBackendMessage();
 }
 init();
+const showCategoryInput = document.querySelector("#showCategoryInput");
+const categoryInputContainer = document.querySelector("#categoryInputContainer");
+const categoryNameInput = document.querySelector("#categoryName");
+const addCategoryBtn = document.querySelector("#addCategoryBtn");
+const cancelCategoryBtn = document.querySelector("#cancelCategoryBtn");
+showCategoryInput?.addEventListener("click", () => {
+    categoryInputContainer.hidden = false;
+    categoryNameInput?.focus();
+    convertCategoriesToRadios("Income");
+});
+cancelCategoryBtn?.addEventListener("click", () => {
+    categoryInputContainer.hidden = true;
+    if (categoryNameInput) {
+        categoryNameInput.value = "";
+    }
+});
+addCategoryBtn?.addEventListener("click", async () => {
+    const name = categoryNameInput?.value.trim();
+    if (!name) {
+        alert("Please enter a category name!");
+        return;
+    }
+    const selectedType = document.querySelector('input[name="categoryType"]:checked');
+    if (!selectedType) {
+        alert("Please select Income or Expenditure!");
+        return;
+    }
+    await addCategory(selectedType.value);
+    categoryInputContainer.hidden = true;
+});

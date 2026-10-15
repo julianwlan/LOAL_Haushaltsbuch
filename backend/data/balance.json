@@ -1,4 +1,15 @@
 {
   "bookings": {
+    "bk1": {
+      "id": 1,
+      "date": "2026-10-15T14:06:36.155Z",
+      "description": "billa",
+      "amount": 50,
+      "type": 1,
+      "category": {
+        "id": 5,
+        "name": "Food"
+      }
+    }
   }
 }
