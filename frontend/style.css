@@ -13,7 +13,7 @@ body {
 }
 
 .logo {
-    width: 60px;
+    width: 3vw;
     border-radius: 50%;
 }
 
@@ -41,6 +41,13 @@ body {
 }
 
 .nav-btn {
+    cursor: pointer;
+    background-color: #d39046;
+    border-radius: 20px;
+    padding: 1vh 2vh;
+}
 
+.nav-btn:hover {
+    color: white;
 }
 
