@@ -4,11 +4,11 @@ const incomeCategories = ["Job", "Gift", "Investment", "Other"];
 const expenditureCategories = ["Rent", "Food", "Transport", "Hobby", "Abonnement", "Health", "Other"];
 const api = "http://localhost:3000";
 let path = "/api/data";
-var type;
-(function (type) {
-    type[type["INCOME"] = 0] = "INCOME";
-    type[type["EXPENDITURE"] = 1] = "EXPENDITURE";
-})(type || (type = {}));
+var Type;
+(function (Type) {
+    Type[Type["INCOME"] = 0] = "INCOME";
+    Type[Type["EXPENDITURE"] = 1] = "EXPENDITURE";
+})(Type || (Type = {}));
 async function getBackendMessage() {
     try {
         const response = await fetch("/api");
@@ -23,11 +23,31 @@ async function getBackendMessage() {
     }
 }
 const saveDataBtn = document.querySelector("#saveDataBtn");
-/*saveDataBtn.addEventListener("click", e => {
-    addBookingToJson();
-});*/
-async function addBookingToJson() {
+saveDataBtn.addEventListener("click", async (e) => {
     const id = await getIdFromServer();
+    const date = new Date();
+    const description = "billa";
+    const amount = 50;
+    const type = Type.EXPENDITURE;
+    const categoryId = 5;
+    const categoryName = "Food";
+    const info = {
+        [`bk${id}`]: {
+            id: id,
+            date: date,
+            description: description,
+            amount: amount,
+            type: type,
+            category: {
+                id: categoryId,
+                name: categoryName
+            }
+        }
+    };
+    addBookingToJson(info);
+});
+async function addBookingToJson(info) {
+    /*const info = info;
     const info = {
         [`bk${id}`]: {
             id: id,
@@ -40,7 +60,7 @@ async function addBookingToJson() {
                 name: "drinks"
             }
         }
-    };
+    };*/
     fetch(api + "/api/data", {
         method: "POST",
         headers: {
@@ -60,5 +80,5 @@ async function getJsonFile() {
     console.log(response);
 }
 getJsonFile();
-addBookingToJson();
+// addBookingToJson();
 getBackendMessage();

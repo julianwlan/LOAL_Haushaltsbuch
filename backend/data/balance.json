@@ -1,15 +1,4 @@
 {
   "bookings": {
-    "bk1": {
-      "id": 1,
-      "date": "01.01.2001",
-      "description": "billa",
-      "amount": 50,
-      "type": "EXPENDITURE",
-      "category": {
-        "id": 2,
-        "name": "drinks"
-      }
-    }
   }
 }

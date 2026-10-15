@@ -6,9 +6,23 @@ const expenditureCategories: string[] = ["Rent", "Food", "Transport", "Hobby", "
 const api: string = "http://localhost:3000";
 let path: string = "/api/data";
 
-enum type {
+enum Type {
     INCOME,
     EXPENDITURE
+}
+
+interface Info {
+    [key: string]: {
+        id: number,
+        date: Date,
+        description: string,
+        amount: number,
+        type: Type,
+        category: {
+            id: number,
+            name: string
+        }
+    }
 }
 
 async function getBackendMessage(): Promise<void> {
@@ -29,25 +43,32 @@ async function getBackendMessage(): Promise<void> {
 }
 
 const saveDataBtn: HTMLButtonElement = document.querySelector("#saveDataBtn") as HTMLButtonElement;
-/*saveDataBtn.addEventListener("click", e => {
-    addBookingToJson();
-});*/
-
-async function addBookingToJson() {
+saveDataBtn.addEventListener("click", async e => {
     const id = await getIdFromServer();
-    const info = {
+    const date: Date = new Date();
+    const description: string = "billa";
+    const amount: number = 50;
+    const type: Type = Type.EXPENDITURE;
+    const categoryId: number = 5;
+    const categoryName: string = "Food";
+
+    const info: Info = {
         [`bk${id}`]: {
             id: id,
-            date: "01.01.2001",
-            description: "billa",
-            amount: 50,
-            type: "EXPENDITURE",
+            date: date,
+            description: description,
+            amount: amount,
+            type: type,
             category: {
-                id: 2,
-                name: "drinks"
+                id: categoryId,
+                name: categoryName
             }
         }
-    };
+    }
+    addBookingToJson(info);
+});
+
+async function addBookingToJson(info: Info) {
 
     fetch(api + "/api/data", {
         method: "POST",
@@ -74,5 +95,4 @@ async function getJsonFile() {
 }
 
 getJsonFile();
-addBookingToJson();
 getBackendMessage();
