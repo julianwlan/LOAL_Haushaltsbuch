@@ -1,8 +1,9 @@
 "use strict";
 console.log("Hello from backend");
-let categories;
 const api = "http://localhost:3000";
 let path = "/api/data";
+let id = 1;
+let categories;
 var Type;
 (function (Type) {
     Type[Type["INCOME"] = 0] = "INCOME";
@@ -23,7 +24,7 @@ async function getBackendMessage() {
 }
 const saveDataBtn = document.querySelector("#saveDataBtn");
 saveDataBtn.addEventListener("click", async (e) => {
-    const id = await getIdFromServer();
+    const bookingId = id++;
     const date = new Date();
     const description = "billa";
     const amount = 50;
@@ -31,8 +32,8 @@ saveDataBtn.addEventListener("click", async (e) => {
     const categoryId = 5;
     const categoryName = "Food";
     const info = {
-        [`bk${id}`]: {
-            id: id,
+        [`bk${bookingId}`]: {
+            id: bookingId,
             date: date,
             description: description,
             amount: amount,
@@ -54,12 +55,29 @@ async function addBookingToJson(info) {
         body: JSON.stringify(info)
     });
 }
-async function getIdFromServer() {
+/*async function getIdFromServer() {
     const response = await fetch(api + "/api/id");
-    const id = await response.json();
+
+    const id: number = await response.json();
+
     return id;
+}*/
+function addCategoriesFromUser() {
+    const radio = document.querySelectorAll('input[name="category"]');
+    const container = document.querySelector("#incomeCategories");
+    container.innerHTML = "";
+    categories.incomeCategories.forEach(category => {
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = "category";
+        radio.value = String(category.id);
+        const label = document.createElement("label");
+        label.append(radio, category.name);
+        container.appendChild(label);
+    });
 }
 async function addCategoriesToJson() {
+    addCategoriesFromUser();
     fetch(api + "/api/categories", {
         method: "POST",
         headers: {
@@ -72,14 +90,17 @@ async function getCategoriesFromServer() {
     const response = await fetch(api + "/api/categories");
     const data = await response.json();
     categories = data.categories;
+    addCategoriesFromUser();
 }
 // function getCategoriesFromUser()
 async function getJsonFile() {
     const data = await fetch(api + path);
     const response = await data.json();
-    console.log(response);
 }
-getCategoriesFromServer();
-//addCategoriesToJson();
-getJsonFile();
-getBackendMessage();
+async function init() {
+    await getCategoriesFromServer();
+    //await addCategoriesToJson();
+    await getJsonFile();
+    await getBackendMessage();
+}
+init();

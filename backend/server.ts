@@ -3,7 +3,7 @@ import path = require("path");
 import fs = require("fs");
 import {Express} from "express";
 
-let id: number = 1;
+//let id: number = 1;
 
 const app: Express = express();
 app.use(express.json());
@@ -15,10 +15,6 @@ app.get("/api", (req, res) => {
         success: true,
         message: "Backend is running!"
     });
-});
-
-app.get("/api/id", (req, res) => {
-    res.send(id++);
 });
 
 app.post("/api/data", (req, res) => {
@@ -48,8 +44,29 @@ app.post("/api/categories", (req, res) => {
     const file = fs.readFileSync(filePath, "utf-8");
     const dataFile = JSON.parse(file);
 
-    dataFile.categories.incomeCategories = data.income;
-    dataFile.categories.expenditureCategories = data.expenditure;
+    if(data.incomeCategories != undefined) {
+        for (const category of data.incomeCategories) {
+            const incomeExists: boolean = dataFile.categories.incomeCategories
+                .some((c: any) => c.id === category.id);
+
+            if (!incomeExists) {
+                dataFile.categories.incomeCategories.push(data.income);
+            }
+        }
+    }
+
+    if(data.expenditureCategories!= undefined) {
+        for (const category of data.expenditureCategories) {
+            const expenditureExists: boolean = dataFile.categories.expenditureCategories
+                .some((c: any) => c.id === category.id);
+
+            if (!expenditureExists) {
+                dataFile.categories.expenditureCategories.push(data.expenditure);
+            }
+        }
+    }
+
+
 
     fs.writeFileSync(filePath, JSON.stringify(dataFile, null, 2));
 });
