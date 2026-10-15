@@ -52,7 +52,7 @@ async function getBackendMessage(): Promise<void> {
     }
 }
 
-const saveDataBtn: HTMLButtonElement = document.querySelector("#saveDataBtn") as HTMLButtonElement;
+/* const saveDataBtn: HTMLButtonElement = document.querySelector("#saveDataBtn") as HTMLButtonElement;
 saveDataBtn.addEventListener("click", async e => {
     const bookingId = id++;
     const date: Date = new Date();
@@ -76,7 +76,7 @@ saveDataBtn.addEventListener("click", async e => {
         }
     }
     addBookingToJson(info);
-});
+});*/
 
 async function addBookingToJson(info: Info) {
     fetch(api + "/api/data", {
@@ -89,10 +89,7 @@ async function addBookingToJson(info: Info) {
 }
 
 function convertCategoriesToRadios(selector: string){
-    const radio = document.querySelectorAll<HTMLInputElement>('input[name="category"]');
-
-    const container: Element = document.querySelector("#incomeCategories") as Element;
-
+    const container: HTMLDivElement = document.querySelector("#radio-div") as HTMLDivElement;
     container.innerHTML = "";
 
     if(selector == "Income") {

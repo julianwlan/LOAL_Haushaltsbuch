@@ -22,16 +22,17 @@ async function getBackendMessage() {
         console.error("Fehler beim Abrufen des Backends:", error);
     }
 }
-const saveDataBtn = document.querySelector("#saveDataBtn");
-saveDataBtn.addEventListener("click", async (e) => {
+/* const saveDataBtn: HTMLButtonElement = document.querySelector("#saveDataBtn") as HTMLButtonElement;
+saveDataBtn.addEventListener("click", async e => {
     const bookingId = id++;
-    const date = new Date();
-    const description = "billa";
-    const amount = 50;
-    const type = Type.EXPENDITURE;
-    const categoryId = 5;
-    const categoryName = "Food";
-    const info = {
+    const date: Date = new Date();
+    const description: string = "billa";
+    const amount: number = 50;
+    const type: Type = Type.EXPENDITURE;
+    const categoryId: number = 5;
+    const categoryName: string = "Food";
+
+    const info: Info = {
         [`bk${bookingId}`]: {
             id: bookingId,
             date: date,
@@ -43,9 +44,9 @@ saveDataBtn.addEventListener("click", async (e) => {
                 name: categoryName
             }
         }
-    };
+    }
     addBookingToJson(info);
-});
+});*/
 async function addBookingToJson(info) {
     fetch(api + "/api/data", {
         method: "POST",
@@ -56,8 +57,7 @@ async function addBookingToJson(info) {
     });
 }
 function convertCategoriesToRadios(selector) {
-    const radio = document.querySelectorAll('input[name="category"]');
-    const container = document.querySelector("#incomeCategories");
+    const container = document.querySelector("#radio-div");
     container.innerHTML = "";
     if (selector == "Income") {
         categories.incomeCategories.forEach(category => {
@@ -118,33 +118,3 @@ async function init() {
     await getBackendMessage();
 }
 init();
-const showCategoryInput = document.querySelector("#showCategoryInput");
-const categoryInputContainer = document.querySelector("#categoryInputContainer");
-const categoryNameInput = document.querySelector("#categoryName");
-const addCategoryBtn = document.querySelector("#addCategoryBtn");
-const cancelCategoryBtn = document.querySelector("#cancelCategoryBtn");
-showCategoryInput?.addEventListener("click", () => {
-    categoryInputContainer.hidden = false;
-    categoryNameInput?.focus();
-    convertCategoriesToRadios("Income");
-});
-cancelCategoryBtn?.addEventListener("click", () => {
-    categoryInputContainer.hidden = true;
-    if (categoryNameInput) {
-        categoryNameInput.value = "";
-    }
-});
-addCategoryBtn?.addEventListener("click", async () => {
-    const name = categoryNameInput?.value.trim();
-    if (!name) {
-        alert("Please enter a category name!");
-        return;
-    }
-    const selectedType = document.querySelector('input[name="categoryType"]:checked');
-    if (!selectedType) {
-        alert("Please select Income or Expenditure!");
-        return;
-    }
-    await addCategory(selectedType.value);
-    categoryInputContainer.hidden = true;
-});
