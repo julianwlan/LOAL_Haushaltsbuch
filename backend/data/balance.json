@@ -2,13 +2,35 @@
   "bookings": {
     "bk1": {
       "id": 1,
-      "date": "01.01.2001",
+      "date": "2026-10-15T08:51:31.656Z",
       "description": "billa",
       "amount": 50,
-      "type": "EXPENDITURE",
+      "type": 1,
       "category": {
-        "id": 2,
-        "name": "drinks"
+        "id": 5,
+        "name": "Food"
+      }
+    },
+    "bk2": {
+      "id": 2,
+      "date": "2026-10-15T08:51:32.687Z",
+      "description": "billa",
+      "amount": 50,
+      "type": 1,
+      "category": {
+        "id": 5,
+        "name": "Food"
+      }
+    },
+    "bk3": {
+      "id": 3,
+      "date": "2026-10-15T08:52:18.223Z",
+      "description": "billa",
+      "amount": 50,
+      "type": 1,
+      "category": {
+        "id": 5,
+        "name": "Food"
       }
     },
     "bk2": {
