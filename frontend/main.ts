@@ -1,5 +1,9 @@
 console.log("Hello from backend");
 
+const api: string = "http://localhost:3000";
+let path: string = "/api/data";
+let id: number = 1;
+
 interface Category {
     id: number;
     name: string;
@@ -11,9 +15,6 @@ interface Categories {
 }
 
 let categories: Categories;
-
-const api: string = "http://localhost:3000";
-let path: string = "/api/data";
 
 enum Type {
     INCOME,
@@ -51,32 +52,6 @@ async function getBackendMessage(): Promise<void> {
     }
 }
 
-const saveDataBtn: HTMLButtonElement = document.querySelector("#saveDataBtn") as HTMLButtonElement;
-saveDataBtn.addEventListener("click", async e => {
-    const id = await getIdFromServer();
-    const date: Date = new Date();
-    const description: string = "billa";
-    const amount: number = 50;
-    const type: Type = Type.EXPENDITURE;
-    const categoryId: number = 5;
-    const categoryName: string = "Food";
-
-    const info: Info = {
-        [`bk${id}`]: {
-            id: id,
-            date: date,
-            description: description,
-            amount: amount,
-            type: type,
-            category: {
-                id: categoryId,
-                name: categoryName
-            }
-        }
-    }
-    addBookingToJson(info);
-});
-
 async function addBookingToJson(info: Info) {
     fetch(api + "/api/data", {
         method: "POST",
@@ -87,15 +62,40 @@ async function addBookingToJson(info: Info) {
     });
 }
 
-async function getIdFromServer() {
-    const response = await fetch(api + "/api/id");
+function convertCategoriesToRadios(selector: string){
+    const container: HTMLDivElement = document.querySelector("#radio-div") as HTMLDivElement;
+    container.innerHTML = "";
 
-    const id: number = await response.json();
+    if(selector == "Income") {
+        categories.incomeCategories.forEach(category => {
+            const radio = document.createElement("input");
+            radio.type = "radio";
+            radio.name = "incomeCategory";
+            radio.value = String(category.id);
 
-    return id;
+            const label: HTMLLabelElement = document.createElement("label");
+            label.append(radio, category.name);
+
+            container.appendChild(label);
+        });
+    } else if(selector == "Expenditure"){
+
+        categories.expenditureCategories.forEach(category => {
+            const radio = document.createElement("input");
+            radio.type = "radio";
+            radio.name = "expenditureCategory";
+            radio.value = String(category.id);
+
+            const label: HTMLLabelElement = document.createElement("label");
+            label.append(radio, category.name);
+
+            container.appendChild(label);
+    });
+    }
 }
 
 async function addCategoriesToJson(){
+    convertCategoriesToRadios("Income");
     fetch(api + "/api/categories", {
         method: "POST",
         headers: {
@@ -112,16 +112,97 @@ async function getCategoriesFromServer(){
     categories = data.categories;
 }
 
-// function getCategoriesFromUser()
+function addCategory(type: string) {
+    //const categorys: HTML
+    if (type === "Income") {
+        //categories = categorys.categories.incomeCategories;
+    } else if (type === "Expenditure") {
+        //categories = categorys.categories.expenditureCategories;
+    }
+}
 
 async function getJsonFile() {
     const data = await fetch(api + path);
 
     const response = await data.json();
-    console.log(response);
 }
 
-getCategoriesFromServer();
-//addCategoriesToJson();
-getJsonFile();
-getBackendMessage();
+async function init() {
+    await getCategoriesFromServer();
+    convertCategoriesToRadios("Expenditure");
+    //await addCategoriesToJson();
+    await getJsonFile();
+    await getBackendMessage();
+}
+
+const showCategoryInput = document.querySelector<HTMLButtonElement>("#showCategoryInput");
+
+const categoryInputContainer = document.querySelector<HTMLDivElement>("#categoryInputContainer");
+
+const categoryNameInput = document.querySelector<HTMLInputElement>("#categoryName");
+
+const addCategoryBtn = document.querySelector<HTMLButtonElement>("#addCategoryBtn");
+
+const cancelCategoryBtn = document.querySelector<HTMLButtonElement>("#cancelAddCategoryBtn");
+
+const saveDataBtn: HTMLButtonElement = document.querySelector("#saveDataBtn") as HTMLButtonElement;
+
+showCategoryInput?.addEventListener("click", () => {
+    categoryInputContainer!.hidden = false;
+    categoryNameInput?.focus();
+});
+
+cancelCategoryBtn?.addEventListener("click", () => {
+    categoryInputContainer!.hidden = true;
+
+    if (categoryNameInput) {
+        categoryNameInput.value = "";
+    }
+});
+
+addCategoryBtn?.addEventListener("click", async () => {
+    const name = categoryNameInput?.value.trim();
+
+    if (!name) {
+        alert("Please enter a category name!");
+        return;
+    }
+
+    const selectedType: HTMLInputElement = document.querySelector<HTMLInputElement>('input[name="categoryType"]:checked') as HTMLInputElement;
+
+    if (!selectedType) {
+        alert("Please select Income or Expenditure!");
+        return;
+    }
+
+    await addCategory(selectedType.value);
+
+    categoryInputContainer!.hidden = true;
+});
+
+saveDataBtn?.addEventListener("click", async e => {
+    const bookingId = id++;
+    const date: Date = new Date();
+    const description: string = document.querySelector<HTMLInputElement>("#descr-input")!.value.trim();
+    const amount: number = Number (document.querySelector<HTMLInputElement>("#amnt-input")!.value);
+    const type: Type = Type.EXPENDITURE;
+    const categoryId: number = Number (document.querySelector<HTMLInputElement>('input[name="expenditureCategory"]:checked')!.value);
+    const categoryName: string = document.querySelector<HTMLInputElement>('input[name="expenditureCategory"]:checked')!.parentElement!.textContent!.trim();
+
+    const info: Info = {
+        [`bk${bookingId}`]: {
+            id: bookingId,
+            date: date,
+            description: description,
+            amount: amount,
+            type: type,
+            category: {
+                id: categoryId,
+                name: categoryName
+            }
+        }
+    }
+    addBookingToJson(info);
+});
+
+init();
