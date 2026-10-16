@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
-let id = 1;
+
 const app = express();
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, "../frontend")));
@@ -12,9 +12,6 @@ app.get("/api", (req, res) => {
         success: true,
         message: "Backend is running!"
     });
-});
-app.get("/api/id", (req, res) => {
-    res.send(id++);
 });
 app.post("/api/data", (req, res) => {
     const data = req.body;
@@ -36,8 +33,6 @@ app.post("/api/categories", (req, res) => {
     const filePath = path.resolve(__dirname, "data/categories.json");
     const file = fs.readFileSync(filePath, "utf-8");
     const dataFile = JSON.parse(file);
-    dataFile.categories.incomeCategories = data.income;
-    dataFile.categories.expenditureCategories = data.expenditure;
     fs.writeFileSync(filePath, JSON.stringify(dataFile, null, 2));
 });
 app.get("/api/categories", (req, res) => {

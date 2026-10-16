@@ -22,7 +22,6 @@ async function getBackendMessage() {
     }
 }
 const saveDataBtn = document.querySelector("#saveDataBtn");
-const toggle = document.querySelector("#toggled");
 saveDataBtn.addEventListener("click", async (e) => {
     const id = await getIdFromServer();
     const date = new Date();
@@ -45,8 +44,6 @@ saveDataBtn.addEventListener("click", async (e) => {
         }
     };
     addBookingToJson(info);
-});
-toggle.addEventListener("click", async (e) => {
 });
 async function addBookingToJson(info) {
     fetch(api + "/api/data", {

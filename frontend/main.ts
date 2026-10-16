@@ -52,8 +52,6 @@ async function getBackendMessage(): Promise<void> {
 }
 
 const saveDataBtn: HTMLButtonElement = document.querySelector("#saveDataBtn") as HTMLButtonElement;
-const toggle: HTMLButtonElement = document.querySelector("#toggled") as HTMLButtonElement;
-
 saveDataBtn.addEventListener("click", async e => {
     const id = await getIdFromServer();
     const date: Date = new Date();
@@ -77,10 +75,6 @@ saveDataBtn.addEventListener("click", async e => {
         }
     }
     addBookingToJson(info);
-});
-
-toggle.addEventListener("click", async e => {
-
 });
 
 async function addBookingToJson(info: Info) {
