@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="img/faviconAndLogo.png">
-    <meta http-equiv="refresh" content="0">
 </head>
 <body>
     <nav id="nav-bar">
@@ -20,14 +19,17 @@
     </nav>
 
     <form id="booking-form">
-        <div class="toggled">
-            <button id="income-toggle" class="toggle-element">Income</button>
+        <div id="toggled">
+            <button id="income-toggle" class="toggle-element clicked">Income</button>
             <button id="expense-toggle" class="toggle-element">Expenses</button>
         </div>
 
-        <input type="text" name="description" id="descr-input" placeholder="Brief Description">
-        <div>
-            <input type="number" name="amount" id="amnt-input" placeholder="1000">
+        <div id="descr-div">
+            <input type="text" name="description" id="descr-input" placeholder="Brief Description">
+        </div>
+
+        <div id="amnt-div">
+            <input type="number" name="amount" id="amnt-input" placeholder="10">
             <span>€</span>
         </div>
 
