@@ -97,7 +97,7 @@ const categoryInputContainer = document.querySelector("#categoryInputContainer")
 const categoryNameInput = document.querySelector("#categoryName");
 const addCategoryBtn = document.querySelector("#addCategoryBtn");
 const cancelCategoryBtn = document.querySelector("#cancelAddCategoryBtn");
-const saveDataBtn = document.querySelector("#saveDataBtn");
+const saveDataBtn = document.querySelector("#submit-btn");
 showCategoryInput?.addEventListener("click", () => {
     categoryInputContainer.hidden = false;
     categoryNameInput?.focus();

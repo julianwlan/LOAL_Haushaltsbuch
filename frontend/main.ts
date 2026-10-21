@@ -145,7 +145,7 @@ const addCategoryBtn = document.querySelector<HTMLButtonElement>("#addCategoryBt
 
 const cancelCategoryBtn = document.querySelector<HTMLButtonElement>("#cancelAddCategoryBtn");
 
-const saveDataBtn: HTMLButtonElement = document.querySelector("#saveDataBtn") as HTMLButtonElement;
+const saveDataBtn: HTMLButtonElement = document.querySelector("#submit-btn") as HTMLButtonElement;
 
 showCategoryInput?.addEventListener("click", () => {
     categoryInputContainer!.hidden = false;
