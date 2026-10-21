@@ -3,6 +3,7 @@ console.log("Hello from backend");
 const api: string = "http://localhost:3000";
 let path: string = "/api/data";
 let id: number = 1;
+let isIncome: boolean = true;
 
 interface Category {
     id: number;
@@ -185,7 +186,7 @@ saveDataBtn?.addEventListener("click", async e => {
     const date: Date = new Date();
     const description: string = document.querySelector<HTMLInputElement>("#descr-input")!.value.trim();
     const amount: number = Number (document.querySelector<HTMLInputElement>("#amnt-input")!.value);
-    const type: Type = Type.EXPENDITURE;
+    const type: Type = isIncome ? Type.INCOME : Type.EXPENDITURE;
     const categoryId: number = Number (document.querySelector<HTMLInputElement>('input[name="expenditureCategory"]:checked')!.value);
     const categoryName: string = document.querySelector<HTMLInputElement>('input[name="expenditureCategory"]:checked')!.parentElement!.textContent!.trim();
 

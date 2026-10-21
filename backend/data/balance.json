@@ -2,13 +2,13 @@
   "bookings": {
     "bk1": {
       "id": 1,
-      "date": "2026-10-21T07:56:16.931Z",
-      "description": "descrip",
-      "amount": 243,
+      "date": "2026-10-21T08:14:20.935Z",
+      "description": "dsscd",
+      "amount": 3342,
       "type": 1,
       "category": {
-        "id": 2,
-        "name": "Food"
+        "id": 4,
+        "name": "Transport"
       }
     }
   }
