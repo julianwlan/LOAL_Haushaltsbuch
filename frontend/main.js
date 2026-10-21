@@ -3,6 +3,7 @@ console.log("Hello from backend");
 const api = "http://localhost:3000";
 let path = "/api/data";
 let id = 1;
+let isIncome = true;
 let categories;
 var Type;
 (function (Type) {
@@ -87,7 +88,7 @@ async function getJsonFile() {
 }
 async function init() {
     await getCategoriesFromServer();
-    convertCategoriesToRadios("Expenditure");
+    convertCategoriesToRadios(isIncome ? "Income" : "Expenditure");
     //await addCategoriesToJson();
     await getJsonFile();
     await getBackendMessage();
@@ -97,7 +98,21 @@ const categoryInputContainer = document.querySelector("#categoryInputContainer")
 const categoryNameInput = document.querySelector("#categoryName");
 const addCategoryBtn = document.querySelector("#addCategoryBtn");
 const cancelCategoryBtn = document.querySelector("#cancelAddCategoryBtn");
-const saveDataBtn = document.querySelector("#submit-btn");
+const incomeToggle = document.querySelector("#income-toggle");
+const expenseToggle = document.querySelector("#expense-toggle");
+const bookingForm = document.querySelector("#booking-form");
+function setBookingType(income) {
+    isIncome = income;
+    incomeToggle?.classList.toggle("clicked", isIncome);
+    incomeToggle?.setAttribute("aria-pressed", String(isIncome));
+    expenseToggle?.classList.toggle("clicked", !isIncome);
+    expenseToggle?.setAttribute("aria-pressed", String(!isIncome));
+    if (categories) {
+        convertCategoriesToRadios(isIncome ? "Income" : "Expenditure");
+    }
+}
+incomeToggle?.addEventListener("click", () => setBookingType(true));
+expenseToggle?.addEventListener("click", () => setBookingType(false));
 showCategoryInput?.addEventListener("click", () => {
     categoryInputContainer.hidden = false;
     categoryNameInput?.focus();
@@ -122,14 +137,21 @@ addCategoryBtn?.addEventListener("click", async () => {
     await addCategory(selectedType.value);
     categoryInputContainer.hidden = true;
 });
-saveDataBtn?.addEventListener("click", async (e) => {
-    const bookingId = id++;
+bookingForm?.addEventListener("submit", async (e) => {
+    e.preventDefault();
     const date = new Date();
     const description = document.querySelector("#descr-input").value.trim();
     const amount = Number(document.querySelector("#amnt-input").value);
-    const type = Type.EXPENDITURE;
-    const categoryId = Number(document.querySelector('input[name="expenditureCategory"]:checked').value);
-    const categoryName = document.querySelector('input[name="expenditureCategory"]:checked').parentElement.textContent.trim();
+    const type = isIncome ? Type.INCOME : Type.EXPENDITURE;
+    const categoryInputName = isIncome ? "incomeCategory" : "expenditureCategory";
+    const selectedCategory = document.querySelector(`input[name="${categoryInputName}"]:checked`);
+    if (!selectedCategory) {
+        alert("Please select a category!");
+        return;
+    }
+    const bookingId = id++;
+    const categoryId = Number(selectedCategory.value);
+    const categoryName = selectedCategory.parentElement.textContent.trim();
     const info = {
         [`bk${bookingId}`]: {
             id: bookingId,

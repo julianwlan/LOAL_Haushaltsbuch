@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <title>Budget Book</title>
@@ -19,9 +19,9 @@
     </nav>
 
     <form id="booking-form">
-        <div id="toggled">
-            <button id="income-toggle" class="toggle-element clicked">Income</button>
-            <button id="expense-toggle" class="toggle-element">Expenses</button>
+        <div id="toggled" role="group" aria-label="Buchungstyp">
+            <button type="button" id="income-toggle" class="toggle-element clicked" aria-pressed="true">Income</button>
+            <button type="button" id="expense-toggle" class="toggle-element" aria-pressed="false">Expense</button>
         </div>
 
         <input type="text" name="description" id="descr-input" placeholder="Brief Description">
