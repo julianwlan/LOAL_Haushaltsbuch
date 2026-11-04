@@ -93,18 +93,16 @@ body {
     outline-offset: 2px;
 }
 
-#descr-div {
-    margin: 1vh auto;
-}
-
 #descr-input {
     width: 80%;
     margin: 1vh auto;
+    height: 30px;
 }
 
 #amnt-input {
     width: 80%;
     margin: 1vh auto;
+    height: 30px;
 }
 
 #radio-div {
@@ -161,6 +159,8 @@ body {
 }
 
 .err-msg {
+    margin: 30px;
     color: red;
     font-weight: 300;
+    text-align: center;
 }
