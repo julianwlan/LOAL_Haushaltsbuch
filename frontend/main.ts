@@ -214,9 +214,6 @@ bookingForm?.addEventListener("submit", async e => {
         if(!form.querySelector("#error-msg")) {
             form.appendChild(errorText);
         }
-
-        //alert("Please select a category!");
-        // TODO error message
         return;
     }
 
