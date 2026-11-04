@@ -75,7 +75,6 @@ body {
     width: 100%;
     min-height: 40px;
     border: none;
-    font: inherit;
     font-size: 16px;
     font-weight: 500;
     border-radius: 999px;
@@ -129,13 +128,10 @@ body {
     font-size: 15px;
     font-weight: 400;
     cursor: pointer;
-    transition: border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
 }
 
 #radio-div label:has(input:checked) {
-    border-color: #d39046;
     background-color: #fff5e9;
-    box-shadow: 0 0 0 1px #d39046;
 }
 
 #radio-div input[type="radio"] {
@@ -154,7 +150,14 @@ body {
 
 #submit-btn {
     background-color: #d39046;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 999px;
     color: white;
+    cursor: pointer;
+    width: 100%;
+    min-height: 40px;
+    border: none;
 }
 
 .err-msg {
