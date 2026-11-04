@@ -151,7 +151,9 @@ bookingForm?.addEventListener("submit", async (e) => {
         errorText.textContent = "Either the description, the amount or the category is empty!";
         errorText.classList.add("err-msg");
         errorText.id = "error-msg";
-        form.appendChild(errorText);
+        if (!form.querySelector("#error-msg")) {
+            form.appendChild(errorText);
+        }
         //alert("Please select a category!");
         // TODO error message
         return;
