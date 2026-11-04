@@ -208,8 +208,9 @@ bookingForm?.addEventListener("submit", async e => {
     if (!selectedCategory || !description || !amount) {
         const form: HTMLFormElement = document.querySelector("#booking-form") as HTMLFormElement;
         const errorText: HTMLDivElement = document.createElement("div");
-        errorText.textContent = "Either the Description, the Amount or the Category is empty!";
+        errorText.textContent = "Either the description, the amount or the category is empty!";
         errorText.classList.add("err-msg");
+        errorText.id = "error-msg";
         form.appendChild(errorText);
         //alert("Please select a category!");
         // TODO error message
@@ -236,6 +237,10 @@ bookingForm?.addEventListener("submit", async e => {
     await addBookingToJson(info);
 
     bookingForm.reset();
+
+    if(document.querySelectorAll("#error-msg")){
+        document.querySelectorAll("#error-msg").forEach(e => e.remove());
+    }
 
     setBookingType(true);
 });
