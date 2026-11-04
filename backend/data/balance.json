@@ -2,24 +2,24 @@
   "bookings": {
     "bk1": {
       "id": 1,
-      "date": "2026-11-04T08:47:33.140Z",
-      "description": "",
-      "amount": 0,
+      "date": "2026-11-04T09:12:13.461Z",
+      "description": "ddsf",
+      "amount": 34,
       "type": 0,
       "category": {
-        "id": 3,
-        "name": "Investment"
+        "id": 1,
+        "name": "Job"
       }
     },
     "bk2": {
       "id": 2,
-      "date": "2026-11-04T08:45:58.141Z",
-      "description": "wefw",
-      "amount": 3242,
-      "type": 1,
+      "date": "2026-11-04T09:12:26.156Z",
+      "description": "d",
+      "amount": 342,
+      "type": 0,
       "category": {
-        "id": 1,
-        "name": "Rent"
+        "id": 2,
+        "name": "Gift"
       }
     }
   }
