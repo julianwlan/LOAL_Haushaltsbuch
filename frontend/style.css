@@ -54,7 +54,6 @@ body {
 }
 
 #booking-form {
-    border: 1px solid red;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -83,13 +82,11 @@ body {
     background-color: transparent;
     color: #514b45;
     cursor: pointer;
-    transition: background-color 180ms ease, color 180ms ease, box-shadow 180ms ease;
 }
 
 .toggle-element.clicked {
     background-color: #d39046;
     color: white;
-    box-shadow: 0 2px 6px rgb(0 0 0 / 15%);
 }
 
 .toggle-element:focus-visible {
@@ -135,10 +132,6 @@ body {
     transition: border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
 }
 
-#radio-div label:hover {
-    border-color: #d39046;
-}
-
 #radio-div label:has(input:checked) {
     border-color: #d39046;
     background-color: #fff5e9;
@@ -157,4 +150,14 @@ body {
 #radio-div label:focus-within {
     outline: 2px solid #75420e;
     outline-offset: 2px;
+}
+
+#submit-btn {
+    background-color: #d39046;
+    color: white;
+}
+
+.err-msg {
+    color: red;
+    font-weight: 300;
 }
