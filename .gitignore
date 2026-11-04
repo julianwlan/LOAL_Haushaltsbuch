@@ -1,3 +1,4 @@
 .idea
 backend/node_modules
 frontend/index.html
+backend/data/balance.json
