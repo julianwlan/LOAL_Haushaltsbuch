@@ -137,15 +137,10 @@ async function init() {
 }
 
 const showCategoryInput = document.querySelector<HTMLButtonElement>("#showCategoryInput");
-
 const categoryInputContainer = document.querySelector<HTMLDivElement>("#categoryInputContainer");
-
 const categoryNameInput = document.querySelector<HTMLInputElement>("#categoryName");
-
 const addCategoryBtn = document.querySelector<HTMLButtonElement>("#addCategoryBtn");
-
 const cancelCategoryBtn = document.querySelector<HTMLButtonElement>("#cancelAddCategoryBtn");
-
 const incomeToggle: HTMLButtonElement = document.querySelector<HTMLButtonElement>("#income-toggle") as HTMLButtonElement;
 const expenseToggle: HTMLButtonElement = document.querySelector<HTMLButtonElement>("#expense-toggle") as HTMLButtonElement;
 const bookingForm: HTMLFormElement = document.querySelector<HTMLFormElement>("#booking-form") as HTMLFormElement;
@@ -164,6 +159,7 @@ function setBookingType(income: boolean): void {
 }
 
 incomeToggle?.addEventListener("click", () => setBookingType(true));
+
 expenseToggle?.addEventListener("click", () => setBookingType(false));
 
 showCategoryInput?.addEventListener("click", () => {
@@ -209,12 +205,18 @@ bookingForm?.addEventListener("submit", async e => {
     const categoryInputName = isIncome ? "incomeCategory" : "expenditureCategory";
     const selectedCategory = document.querySelector<HTMLInputElement>(`input[name="${categoryInputName}"]:checked`);
 
-    if (!selectedCategory) {
-        alert("Please select a category!");
+    if (!selectedCategory || !description || !amount) {
+        const form: HTMLFormElement = document.querySelector("#booking-form") as HTMLFormElement;
+        const errorText: HTMLDivElement = document.createElement("div");
+        errorText.textContent = "Either the Description, the Amount or the Category is empty!";
+        errorText.classList.add("err-msg");
+        form.appendChild(errorText);
+        //alert("Please select a category!");
+        // TODO error message
         return;
     }
 
-    const bookingId = id++;
+    const bookingId: number = id++;
     const categoryId: number = Number(selectedCategory.value);
     const categoryName: string = selectedCategory.parentElement!.textContent!.trim();
 
@@ -231,7 +233,11 @@ bookingForm?.addEventListener("submit", async e => {
             }
         }
     }
-    addBookingToJson(info);
+    await addBookingToJson(info);
+
+    bookingForm.reset();
+
+    setBookingType(true);
 });
 
 init();

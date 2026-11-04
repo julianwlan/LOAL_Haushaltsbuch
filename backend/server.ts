@@ -3,8 +3,6 @@ import path = require("path");
 import fs = require("fs");
 import {Express} from "express";
 
-//let id: number = 1;
-
 const app: Express = express();
 app.use(express.json());
 

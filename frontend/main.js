@@ -145,8 +145,14 @@ bookingForm?.addEventListener("submit", async (e) => {
     const type = isIncome ? Type.INCOME : Type.EXPENDITURE;
     const categoryInputName = isIncome ? "incomeCategory" : "expenditureCategory";
     const selectedCategory = document.querySelector(`input[name="${categoryInputName}"]:checked`);
-    if (!selectedCategory) {
-        alert("Please select a category!");
+    if (!selectedCategory || !description || !amount) {
+        const form = document.querySelector("#booking-form");
+        const errorText = document.createElement("div");
+        errorText.textContent = "Either the Description, the Amount or the Category is empty!";
+        errorText.classList.add("err-msg");
+        form.appendChild(errorText);
+        //alert("Please select a category!");
+        // TODO error message
         return;
     }
     const bookingId = id++;
@@ -165,6 +171,8 @@ bookingForm?.addEventListener("submit", async (e) => {
             }
         }
     };
-    addBookingToJson(info);
+    await addBookingToJson(info);
+    bookingForm.reset();
+    setBookingType(true);
 });
 init();
