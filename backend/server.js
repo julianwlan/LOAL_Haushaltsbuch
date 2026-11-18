@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
-
 const app = express();
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, "../frontend")));
@@ -33,6 +32,24 @@ app.post("/api/categories", (req, res) => {
     const filePath = path.resolve(__dirname, "data/categories.json");
     const file = fs.readFileSync(filePath, "utf-8");
     const dataFile = JSON.parse(file);
+    if (data.incomeCategories != undefined) {
+        for (const category of data.incomeCategories) {
+            const incomeExists = dataFile.categories.incomeCategories
+                .some((c) => c.id === category.id);
+            if (!incomeExists) {
+                dataFile.categories.incomeCategories.push(data.income);
+            }
+        }
+    }
+    if (data.expenditureCategories != undefined) {
+        for (const category of data.expenditureCategories) {
+            const expenditureExists = dataFile.categories.expenditureCategories
+                .some((c) => c.id === category.id);
+            if (!expenditureExists) {
+                dataFile.categories.expenditureCategories.push(data.expenditure);
+            }
+        }
+    }
     fs.writeFileSync(filePath, JSON.stringify(dataFile, null, 2));
 });
 app.get("/api/categories", (req, res) => {

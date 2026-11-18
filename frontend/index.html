@@ -18,21 +18,32 @@
         <a href="/analysis" id="analysis-btn" class="nav-btn">Analysis</a>
     </nav>
 
-    <form id="booking-form">
-        <div id="toggled" role="group" aria-label="Buchungstyp">
-            <button type="button" id="income-toggle" class="toggle-element clicked" aria-pressed="true">Income</button>
-            <button type="button" id="expense-toggle" class="toggle-element" aria-pressed="false">Expense</button>
+    <div id="container">
+        <form id="booking-form">
+            <div id="toggled" role="group" aria-label="Buchungstyp">
+                <button type="button" id="income-toggle" class="toggle-element clicked" aria-pressed="true">Income</button>
+                <button type="button" id="expense-toggle" class="toggle-element" aria-pressed="false">Expense</button>
+            </div>
+
+            <input type="text" name="description" id="descr-input" placeholder="Brief Description">
+
+            <input type="number" name="amount" id="amnt-input" placeholder="10 €">
+
+            <div id="radio-div"></div>
+
+            <button type="submit" id="submit-btn">Add to balance</button>
+        </form>
+
+        <div id="booking-history">
+            <div class="history-entry">Hallo</div>
+            <div class="history-entry">Hallo</div>
+            <div class="history-entry">Hallo</div>
+            <div class="history-entry">Hallo</div>
+            <div class="history-entry">Hallo</div>
+
         </div>
 
-        <input type="text" name="description" id="descr-input" placeholder="Brief Description">
-
-        <input type="number" name="amount" id="amnt-input" placeholder="10 €">
-
-        <div id="radio-div"></div>
-
-        <button type="submit" id="submit-btn">Add to balance</button>
-    </form>
-
-    <script src="main.js"></script>
+        <script src="main.js"></script>
+    </div>
 </body>
 </html>
