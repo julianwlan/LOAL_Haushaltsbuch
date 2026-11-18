@@ -2,6 +2,8 @@ import express = require("express");
 import path = require("path");
 import fs = require("fs");
 import {Express} from "express";
+import type {Request, Response} from "express";
+import * as bookingRepo from "./repo/bookingRepo";
 
 const app: Express = express();
 app.use(express.json());
@@ -33,6 +35,10 @@ app.post("/api/data", (req, res) => {
 
 app.get("/api/data", (req, res) => {
     res.sendFile(path.resolve(__dirname, "data/balance.json"));
+});
+
+app.get("/api/data/length", (req: Request, res: Response) => {
+    res.json({message: bookingRepo.getLength()});
 });
 
 app.post("/api/categories", (req, res) => {

@@ -1,3 +1,6 @@
+import type{Booking, BookingDto, Category, Categories} from "../backend/models/booking.ts";
+import {Type} from "../backend/models/bookings.ts";
+
 console.log("Hello from backend");
 
 const api: string = "http://localhost:3000";
@@ -5,36 +8,7 @@ let path: string = "/api/data";
 let id: number = 1;
 let isIncome: boolean = true;
 
-interface Category {
-    id: number;
-    name: string;
-}
-
-interface Categories {
-    incomeCategories: Category[];
-    expenditureCategories: Category[];
-}
-
 let categories: Categories;
-
-enum Type {
-    INCOME,
-    EXPENDITURE
-}
-
-interface Info {
-    [key: string]: {
-        id: number,
-        date: Date,
-        description: string,
-        amount: number,
-        type: Type,
-        category: {
-            id: number,
-            name: string
-        }
-    }
-}
 
 async function getBackendMessage(): Promise<void> {
     try {
@@ -53,13 +27,13 @@ async function getBackendMessage(): Promise<void> {
     }
 }
 
-async function addBookingToJson(info: Info) {
+async function addBookingToJson(booking: Booking) {
     fetch(api + "/api/data", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(info)
+        body: JSON.stringify(booking)
     });
 }
 
@@ -134,6 +108,18 @@ async function init() {
     //await addCategoriesToJson();
     await getJsonFile();
     await getBackendMessage();
+}
+
+async function getRecent(){
+    let amount: number = 5;
+
+    if(){
+        amount = allBookings.length
+    }
+
+    const bookings: Response = await fetch(api + path + "/" + amount);
+
+    const convertedBookings: Booking[] = await bookings.json();
 }
 
 const showCategoryInput = document.querySelector<HTMLButtonElement>("#showCategoryInput");
@@ -221,7 +207,7 @@ bookingForm?.addEventListener("submit", async e => {
     const categoryId: number = Number(selectedCategory.value);
     const categoryName: string = selectedCategory.parentElement!.textContent!.trim();
 
-    const info: Info = {
+    const booking: Booking = {
         [`bk${bookingId}`]: {
             id: bookingId,
             date: date,
@@ -234,7 +220,7 @@ bookingForm?.addEventListener("submit", async e => {
             }
         }
     }
-    await addBookingToJson(info);
+    await addBookingToJson(booking);
 
     bookingForm.reset();
 
