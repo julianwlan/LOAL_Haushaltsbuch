@@ -2,13 +2,13 @@
   "bookings": {
     "bk1": {
       "id": 1,
-      "date": "2026-11-04T09:21:14.221Z",
-      "description": "werewr",
-      "amount": 123132,
-      "type": 0,
+      "date": "2026-11-18T08:46:15.095Z",
+      "description": "asdf",
+      "amount": 6,
+      "type": 1,
       "category": {
-        "id": 1,
-        "name": "Job"
+        "id": 8,
+        "name": "Other"
       }
     },
     "bk2": {
