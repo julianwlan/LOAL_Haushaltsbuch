@@ -4,6 +4,7 @@ import fs = require("fs");
 import {Express} from "express";
 import type {Request, Response} from "express";
 import * as bookingRepo from "./repo/bookingRepo";
+import type {Booking, BookingDto, BookingEntry} from "./models/booking";
 
 const app: Express = express();
 app.use(express.json());
@@ -31,6 +32,8 @@ app.post("/api/data", (req, res) => {
     fs.writeFileSync(filePath, JSON.stringify(dataFile, null, 2));
     console.log(data);
     console.log(fs.readFileSync(path.resolve(__dirname, "data/balance.json"), "utf-8"));
+
+    res.status(201).json({success: true, message: "Booking gespeichert"});
 });
 
 app.get("/api/data", (req, res) => {
@@ -39,6 +42,14 @@ app.get("/api/data", (req, res) => {
 
 app.get("/api/data/length", (req: Request, res: Response) => {
     res.json({message: bookingRepo.getLength()});
+});
+
+app.get("/api/data/:amount", (req: Request, res: Response) => {
+    const amount: number = parseInt(req.params.amount as string);
+
+    const bookings: BookingEntry[] = bookingRepo.getBookingsAmount(amount);
+
+    return res.json(bookings);
 });
 
 app.post("/api/categories", (req, res) => {
@@ -54,7 +65,7 @@ app.post("/api/categories", (req, res) => {
                 .some((c: any) => c.id === category.id);
 
             if (!incomeExists) {
-                dataFile.categories.incomeCategories.push(data.income);
+                dataFile.categories.incomeCategories.push(category);
             }
         }
     }
@@ -65,7 +76,7 @@ app.post("/api/categories", (req, res) => {
                 .some((c: any) => c.id === category.id);
 
             if (!expenditureExists) {
-                dataFile.categories.expenditureCategories.push(data.expenditure);
+                dataFile.categories.expenditureCategories.push(category);
             }
         }
     }

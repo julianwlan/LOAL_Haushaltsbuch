@@ -1,15 +1,9 @@
-"use strict";
 console.log("Hello from backend");
 const api = "http://localhost:3000";
 let path = "/api/data";
 let id = 1;
 let isIncome = true;
 let categories;
-var Type;
-(function (Type) {
-    Type[Type["INCOME"] = 0] = "INCOME";
-    Type[Type["EXPENDITURE"] = 1] = "EXPENDITURE";
-})(Type || (Type = {}));
 async function getBackendMessage() {
     try {
         const response = await fetch("/api");
@@ -23,14 +17,17 @@ async function getBackendMessage() {
         console.error("Fehler beim Abrufen des Backends:", error);
     }
 }
-async function addBookingToJson(info) {
-    fetch(api + "/api/data", {
+async function addBookingToJson(booking) {
+    const response = await fetch(api + "/api/data", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(info)
+        body: JSON.stringify(booking)
     });
+    if (!response.ok) {
+        throw new Error(`Fehler beim Speichern: ${response.status}`);
+    }
 }
 function convertCategoriesToRadios(selector) {
     const container = document.querySelector("#radio-div");
@@ -93,6 +90,42 @@ async function init() {
     await getJsonFile();
     await getBackendMessage();
 }
+async function getRecent() {
+    const amount = 5;
+    console.log("startGetRecent");
+    const response = await fetch(api + path + "/" + amount);
+    if (!response.ok) {
+        throw new Error("Bookings konnten nicht geladen werden");
+    }
+    return await response.json();
+}
+function convertBookingsToDiv(bookings) {
+    const mainDiv = document.querySelector("#booking-history");
+    mainDiv.innerHTML = "";
+    bookings.forEach(booking => {
+        const div = document.createElement("div");
+        div.classList.add("history-entry");
+        const idParagraph = document.createElement("p");
+        idParagraph.textContent = booking.id.toString();
+        const dateParagraph = document.createElement("p");
+        dateParagraph.textContent = booking.date.toString();
+        const descriptionParagraph = document.createElement("p");
+        descriptionParagraph.textContent = booking.description.toString();
+        const amountParagraph = document.createElement("p");
+        amountParagraph.textContent = booking.amount.toString();
+        const typeParagraph = document.createElement("p");
+        typeParagraph.textContent = booking.type.toString();
+        const categoryParagraph = document.createElement("p");
+        categoryParagraph.textContent = booking.category.name;
+        div.appendChild(idParagraph);
+        div.appendChild(dateParagraph);
+        div.appendChild(descriptionParagraph);
+        div.appendChild(amountParagraph);
+        div.appendChild(typeParagraph);
+        div.appendChild(categoryParagraph);
+        mainDiv.appendChild(div);
+    });
+}
 const showCategoryInput = document.querySelector("#showCategoryInput");
 const categoryInputContainer = document.querySelector("#categoryInputContainer");
 const categoryNameInput = document.querySelector("#categoryName");
@@ -142,7 +175,7 @@ bookingForm?.addEventListener("submit", async (e) => {
     const date = new Date();
     const description = document.querySelector("#descr-input").value.trim();
     const amount = Number(document.querySelector("#amnt-input").value);
-    const type = isIncome ? Type.INCOME : Type.EXPENDITURE;
+    const type = (isIncome ? 0 : 1);
     const categoryInputName = isIncome ? "incomeCategory" : "expenditureCategory";
     const selectedCategory = document.querySelector(`input[name="${categoryInputName}"]:checked`);
     if (!selectedCategory || !description || !amount) {
@@ -154,14 +187,12 @@ bookingForm?.addEventListener("submit", async (e) => {
         if (!form.querySelector("#error-msg")) {
             form.appendChild(errorText);
         }
-        //alert("Please select a category!");
-        // TODO error message
         return;
     }
     const bookingId = id++;
     const categoryId = Number(selectedCategory.value);
     const categoryName = selectedCategory.parentElement.textContent.trim();
-    const info = {
+    const booking = {
         [`bk${bookingId}`]: {
             id: bookingId,
             date: date,
@@ -174,11 +205,14 @@ bookingForm?.addEventListener("submit", async (e) => {
             }
         }
     };
-    await addBookingToJson(info);
+    await addBookingToJson(booking);
     bookingForm.reset();
     if (document.querySelectorAll("#error-msg")) {
         document.querySelectorAll("#error-msg").forEach(e => e.remove());
     }
     setBookingType(true);
+    console.log("calling function");
+    convertBookingsToDiv(await getRecent());
 });
 init();
+export {};

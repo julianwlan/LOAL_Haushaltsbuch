@@ -1,5 +1,4 @@
-import type{Booking, BookingDto, Category, Categories} from "../backend/models/booking.ts";
-import {Type} from "../backend/models/bookings.ts";
+import type { BookingEntry, Booking, Categories, Type } from "../backend/models/booking.js";
 
 console.log("Hello from backend");
 
@@ -27,14 +26,18 @@ async function getBackendMessage(): Promise<void> {
     }
 }
 
-async function addBookingToJson(booking: Booking) {
-    fetch(api + "/api/data", {
+async function addBookingToJson(booking: Booking): Promise<void> {
+    const response = await fetch(api + "/api/data", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(booking)
     });
+
+    if (!response.ok) {
+        throw new Error(`Fehler beim Speichern: ${response.status}`);
+    }
 }
 
 function convertCategoriesToRadios(selector: string){
@@ -111,15 +114,52 @@ async function init() {
 }
 
 async function getRecent(){
-    let amount: number = 5;
+    const amount: number = 5;
+    console.log("startGetRecent");
+    const response: Response = await fetch(api + path + "/" + amount);
 
-    if(){
-        amount = allBookings.length
+    if (!response.ok) {
+        throw new Error("Bookings konnten nicht geladen werden");
     }
 
-    const bookings: Response = await fetch(api + path + "/" + amount);
+    return await response.json();
+}
 
-    const convertedBookings: Booking[] = await bookings.json();
+function convertBookingsToDiv(bookings: BookingEntry[]){
+    const mainDiv: HTMLDivElement = document.querySelector("#booking-history") as HTMLDivElement;
+    mainDiv.innerHTML = "";
+
+    bookings.forEach(booking => {
+        const div: HTMLDivElement = document.createElement("div");
+        div.classList.add("history-entry");
+
+        const idParagraph: HTMLParagraphElement = document.createElement("p");
+        idParagraph.textContent = booking.id.toString();
+
+        const dateParagraph: HTMLParagraphElement = document.createElement("p");
+        dateParagraph.textContent = booking.date.toString();
+
+        const descriptionParagraph: HTMLParagraphElement = document.createElement("p");
+        descriptionParagraph.textContent = booking.description.toString();
+
+        const amountParagraph: HTMLParagraphElement = document.createElement("p");
+        amountParagraph.textContent = booking.amount.toString();
+
+        const typeParagraph: HTMLParagraphElement = document.createElement("p");
+        typeParagraph.textContent = booking.type.toString();
+
+        const categoryParagraph: HTMLParagraphElement = document.createElement("p");
+        categoryParagraph.textContent = booking.category.name;
+
+        div.appendChild(idParagraph);
+        div.appendChild(dateParagraph);
+        div.appendChild(descriptionParagraph);
+        div.appendChild(amountParagraph);
+        div.appendChild(typeParagraph);
+        div.appendChild(categoryParagraph);
+
+        mainDiv.appendChild(div);
+    });
 }
 
 const showCategoryInput = document.querySelector<HTMLButtonElement>("#showCategoryInput");
@@ -187,7 +227,7 @@ bookingForm?.addEventListener("submit", async e => {
     const date: Date = new Date();
     const description: string = document.querySelector<HTMLInputElement>("#descr-input")!.value.trim();
     const amount: number = Number (document.querySelector<HTMLInputElement>("#amnt-input")!.value);
-    const type: Type = isIncome ? Type.INCOME : Type.EXPENDITURE;
+    const type: Type = (isIncome ? 0 : 1) as Type;
     const categoryInputName = isIncome ? "incomeCategory" : "expenditureCategory";
     const selectedCategory = document.querySelector<HTMLInputElement>(`input[name="${categoryInputName}"]:checked`);
 
@@ -229,6 +269,8 @@ bookingForm?.addEventListener("submit", async e => {
     }
 
     setBookingType(true);
+    console.log("calling function");
+    convertBookingsToDiv(await getRecent());
 });
 
 init();

@@ -1,15 +1,17 @@
-export type Booking = {
-    [key: string]: {
+export type BookingEntry = {
+    id: number,
+    date: Date,
+    description: string,
+    amount: number,
+    type: Type,
+    category: {
         id: number,
-        date: Date,
-        description: string,
-        amount: number,
-        type: Type,
-        category: {
-            id: number,
-            name: string
-        }
+        name: string
     }
+};
+
+export type Booking = {
+    [key: string]: BookingEntry
 };
 
 export type BookingDto = Omit<Booking, "id">;
